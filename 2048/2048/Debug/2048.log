@@ -1,0 +1,6 @@
+﻿  Form1.cpp
+Form1.cpp(15): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
+Form1.cpp(20): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
+Form1.cpp(25): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
+Form1.cpp(30): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
+  2048.vcxproj -> C:\Users\vladp\OneDrive\документы\visual studio 2017\Projects\2048\Debug\2048.exe
