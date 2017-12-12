@@ -1,11 +1,17 @@
 #include "stdafx.h"
 #include "Form1.h"
+using namespace System::Collections::Generic;
 // #include "Form1.h"
 
 int field[4][4] = { { 2, 0, 0, 0 }, 
 					{ 0, 0, 0, 0 }, 
 					{ 0, 0, 0, 0 }, 
 					{ 0, 0, 0, 0 } };
+
+int ***fields = new int**[1];
+int length = 10;
+
+int curTurnNubmer = 0;
 
 int score = 0;
 
@@ -74,6 +80,15 @@ inline System::Drawing::SolidBrush^ CppCLR_WinformsProjekt::Form1::GenerateColor
 	return solidbrush;
 }
 
+System::Void CppCLR_WinformsProjekt::Form1::Form1_Load(System::Object ^ sender, System::EventArgs ^ e)
+{
+	for (int i = 0; i < 10; ++i) {
+		fields[i] = new int*[4];
+		for (int j = 0; j < 4; ++j)
+			fields[i][j] = new int[4];
+	}
+}
+
 inline System::Void CppCLR_WinformsProjekt::Form1::pictureBox1_Paint(System::Object ^ sender, System::Windows::Forms::PaintEventArgs ^ e)
 {
 
@@ -114,18 +129,22 @@ inline System::Void CppCLR_WinformsProjekt::Form1::pictureBox1_Paint(System::Obj
 inline System::Void CppCLR_WinformsProjekt::Form1::Form1_KeyDown(System::Object^  sender, System::Windows::Forms::KeyEventArgs^  e) {
 	if (e->KeyCode == Keys::Down)
 	{
+		Save();
 		Drop();
 	}
 	if (e->KeyCode == Keys::Left)
 	{
+		Save();
 		CppCLR_WinformsProjekt::Form1::Rotate();
 		CppCLR_WinformsProjekt::Form1::Rotate();
 		CppCLR_WinformsProjekt::Form1::Rotate();
 		Drop();
 		CppCLR_WinformsProjekt::Form1::Rotate();
+
 	}
 	if (e->KeyCode == Keys::Right)
 	{
+		Save();
 		CppCLR_WinformsProjekt::Form1::Rotate();
 		Drop();
 		CppCLR_WinformsProjekt::Form1::Rotate();
@@ -134,6 +153,7 @@ inline System::Void CppCLR_WinformsProjekt::Form1::Form1_KeyDown(System::Object^
 	}
 	if (e->KeyCode == Keys::Up)
 	{
+		Save();
 		CppCLR_WinformsProjekt::Form1::Rotate();
 		CppCLR_WinformsProjekt::Form1::Rotate();
 		Drop();
@@ -141,6 +161,27 @@ inline System::Void CppCLR_WinformsProjekt::Form1::Form1_KeyDown(System::Object^
 		CppCLR_WinformsProjekt::Form1::Rotate();
 	}
 	Control::Refresh();
+}
+
+void CppCLR_WinformsProjekt::Form1::Save() {
+	if (length == curTurnNubmer)
+	{
+		for (int i = length; i < length * 2; i++) {
+			fields[i] = new int*[4];
+			for (int j = 0; j < 4; ++j)
+				fields[i][j] = new int[4];
+		}
+		length *= 2;
+	}
+
+	for (int i = 0; i < 4; i++)
+	{
+		for (int j = 0; j < 4; j++)
+		{
+			fields[curTurnNubmer][i][j] = field[i][j];
+		}
+	}
+	curTurnNubmer++;
 }
 
 inline System::Void CppCLR_WinformsProjekt::Form1::resetToolStripMenuItem_Click(System::Object^  sender, System::EventArgs^  e) {
@@ -231,6 +272,24 @@ inline System::Void CppCLR_WinformsProjekt::Form1::Drop() {
 		Generate();
 	}
 	
+}
+
+inline System::Void CppCLR_WinformsProjekt::Form1::undoToolStripMenuItem_Click(System::Object^  sender, System::EventArgs^  e) {
+	label1->Text = "";
+	if (curTurnNubmer != 0)
+	{
+		for (int i = 0; i < 4; i++)
+		{
+			for (int j = 0; j < 4; j++)
+			{
+				field[i][j] = fields[curTurnNubmer - 1][i][j];
+				label1->Text += fields[curTurnNubmer - 1][i][j].ToString()+ " ";
+			}
+			label1->Text += "\n";
+		}
+		curTurnNubmer--;
+		Control::Refresh();
+	}
 }
 
 inline System::Void CppCLR_WinformsProjekt::Form1::Rotate() {
