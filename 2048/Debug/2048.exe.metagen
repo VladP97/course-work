@@ -19,4 +19,4 @@ Class CppCLR_WinformsProjekt.Form1: AutoLayout, AnsiClass, Class, Public, Before
     Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
   Methods:
     pictureBox1_Paint(Object, PaintEventArgs): PrivateScope, Public, HideBySig
-    Form1_KeyPress(Object, KeyPressEventArgs): PrivateScope, Public, HideBySig
+    Drop(): PrivateScope, Public, HideBySig

@@ -36,6 +36,13 @@ namespace CppCLR_WinformsProjekt {
 		}
 	private: System::Windows::Forms::PictureBox^  pictureBox1;
 	private: System::Windows::Forms::Label^  label1;
+	private: System::Windows::Forms::MenuStrip^  menuStrip1;
+	private: System::Windows::Forms::ToolStripMenuItem^  resetToolStripMenuItem;
+	private: System::Windows::Forms::ToolStripMenuItem^  undoToolStripMenuItem;
+	private: System::Windows::Forms::ToolStripMenuItem^  redoToolStripMenuItem;
+
+
+
 
 	protected:
 
@@ -57,14 +64,20 @@ namespace CppCLR_WinformsProjekt {
 		{
 			this->pictureBox1 = (gcnew System::Windows::Forms::PictureBox());
 			this->label1 = (gcnew System::Windows::Forms::Label());
+			this->menuStrip1 = (gcnew System::Windows::Forms::MenuStrip());
+			this->resetToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
+			this->undoToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
+			this->redoToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox1))->BeginInit();
+			this->menuStrip1->SuspendLayout();
 			this->SuspendLayout();
 			// 
 			// pictureBox1
 			// 
-			this->pictureBox1->Location = System::Drawing::Point(12, 76);
+			this->pictureBox1->Location = System::Drawing::Point(22, 140);
+			this->pictureBox1->Margin = System::Windows::Forms::Padding(6);
 			this->pictureBox1->Name = L"pictureBox1";
-			this->pictureBox1->Size = System::Drawing::Size(265, 265);
+			this->pictureBox1->Size = System::Drawing::Size(291, 320);
 			this->pictureBox1->TabIndex = 0;
 			this->pictureBox1->TabStop = false;
 			this->pictureBox1->Paint += gcnew System::Windows::Forms::PaintEventHandler(this, &Form1::pictureBox1_Paint);
@@ -72,25 +85,67 @@ namespace CppCLR_WinformsProjekt {
 			// label1
 			// 
 			this->label1->AutoSize = true;
-			this->label1->Location = System::Drawing::Point(120, 50);
+			this->label1->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 14, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(204)));
+			this->label1->Location = System::Drawing::Point(155, 88);
+			this->label1->Margin = System::Windows::Forms::Padding(6, 0, 6, 0);
 			this->label1->Name = L"label1";
-			this->label1->Size = System::Drawing::Size(35, 13);
+			this->label1->Size = System::Drawing::Size(20, 24);
 			this->label1->TabIndex = 1;
-			this->label1->Text = L"label1";
+			this->label1->Text = L"0";
+			// 
+			// menuStrip1
+			// 
+			this->menuStrip1->Items->AddRange(gcnew cli::array< System::Windows::Forms::ToolStripItem^  >(3) {
+				this->resetToolStripMenuItem,
+					this->undoToolStripMenuItem, this->redoToolStripMenuItem
+			});
+			this->menuStrip1->Location = System::Drawing::Point(0, 0);
+			this->menuStrip1->Name = L"menuStrip1";
+			this->menuStrip1->Size = System::Drawing::Size(345, 24);
+			this->menuStrip1->TabIndex = 2;
+			this->menuStrip1->Text = L"menuStrip1";
+			// 
+			// resetToolStripMenuItem
+			// 
+			this->resetToolStripMenuItem->Name = L"resetToolStripMenuItem";
+			this->resetToolStripMenuItem->Size = System::Drawing::Size(47, 20);
+			this->resetToolStripMenuItem->Text = L"Reset";
+			this->resetToolStripMenuItem->Click += gcnew System::EventHandler(this, &Form1::resetToolStripMenuItem_Click);
+			// 
+			// undoToolStripMenuItem
+			// 
+			this->undoToolStripMenuItem->Name = L"undoToolStripMenuItem";
+			this->undoToolStripMenuItem->Size = System::Drawing::Size(48, 20);
+			this->undoToolStripMenuItem->Text = L"Undo";
+			// 
+			// redoToolStripMenuItem
+			// 
+			this->redoToolStripMenuItem->Name = L"redoToolStripMenuItem";
+			this->redoToolStripMenuItem->Size = System::Drawing::Size(46, 20);
+			this->redoToolStripMenuItem->Text = L"Redo";
 			// 
 			// Form1
 			// 
-			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
+			this->AutoScaleDimensions = System::Drawing::SizeF(11, 24);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
-			this->ClientSize = System::Drawing::Size(292, 360);
+			this->ClientSize = System::Drawing::Size(345, 488);
 			this->Controls->Add(this->label1);
 			this->Controls->Add(this->pictureBox1);
+			this->Controls->Add(this->menuStrip1);
+			this->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 14, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(204)));
+			this->KeyPreview = true;
+			this->MainMenuStrip = this->menuStrip1;
+			this->Margin = System::Windows::Forms::Padding(6);
 			this->Name = L"Form1";
 			this->Text = L"Form1";
 			this->Load += gcnew System::EventHandler(this, &Form1::Form1_Load);
 			this->Click += gcnew System::EventHandler(this, &Form1::Form1_Click);
-			this->KeyPress += gcnew System::Windows::Forms::KeyPressEventHandler(this, &Form1::Form1_KeyPress);
+			this->KeyDown += gcnew System::Windows::Forms::KeyEventHandler(this, &Form1::Form1_KeyDown);
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox1))->EndInit();
+			this->menuStrip1->ResumeLayout(false);
+			this->menuStrip1->PerformLayout();
 			this->ResumeLayout(false);
 			this->PerformLayout();
 
@@ -98,14 +153,33 @@ namespace CppCLR_WinformsProjekt {
 #pragma endregion
 	private: System::Void Form1_Load(System::Object^  sender, System::EventArgs^  e)
 	{
+		Form1::Activate();
+	}
+
+	protected: bool IsInputKey(Keys keyData) override {
+		switch (keyData)
+		{
+		case Keys::Right:
+		case Keys::Left:
+		case Keys::Up:
+		case Keys::Down:
+			return true;
+		case Keys::Shift | Keys::Right:
+		case Keys::Shift | Keys::Left:
+		case Keys::Shift | Keys::Up:
+		case Keys::Shift | Keys::Down:
+			return true;
+		}
 
 	}
 
 	public: System::Void pictureBox1_Paint(System::Object^  sender, System::Windows::Forms::PaintEventArgs^  e);
-	public: System::Void Form1_KeyPress(System::Object^  sender, System::Windows::Forms::KeyPressEventArgs^  e);
 	private: System::Void Rotate();
-	private: System::Void Drop();
+	public: System::Void Drop();
 	private: System::Void Generate();
+	private: SolidBrush^ GenerateColor(int value);
 	private: System::Void Form1_Click(System::Object^  sender, System::EventArgs^  e);
-	};
+	private: System::Void Form1_KeyDown(System::Object^  sender, System::Windows::Forms::KeyEventArgs^  e);
+	private: System::Void resetToolStripMenuItem_Click(System::Object^  sender, System::EventArgs^  e);
+};
 }
