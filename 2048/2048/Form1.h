@@ -41,6 +41,9 @@ namespace CppCLR_WinformsProjekt {
 	private: System::Windows::Forms::ToolStripMenuItem^  undoToolStripMenuItem;
 	private: System::Windows::Forms::ToolStripMenuItem^  redoToolStripMenuItem;
 	private: System::Windows::Forms::Label^  label1;
+	private: System::Windows::Forms::Label^  label2;
+	private: System::Windows::Forms::Label^  label3;
+	private: System::Windows::Forms::Label^  label4;
 
 
 
@@ -70,6 +73,9 @@ namespace CppCLR_WinformsProjekt {
 			this->undoToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
 			this->redoToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
 			this->label1 = (gcnew System::Windows::Forms::Label());
+			this->label2 = (gcnew System::Windows::Forms::Label());
+			this->label3 = (gcnew System::Windows::Forms::Label());
+			this->label4 = (gcnew System::Windows::Forms::Label());
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox1))->BeginInit();
 			this->menuStrip1->SuspendLayout();
 			this->SuspendLayout();
@@ -115,24 +121,55 @@ namespace CppCLR_WinformsProjekt {
 			this->redoToolStripMenuItem->Name = L"redoToolStripMenuItem";
 			this->redoToolStripMenuItem->Size = System::Drawing::Size(46, 20);
 			this->redoToolStripMenuItem->Text = L"Redo";
+			this->redoToolStripMenuItem->Click += gcnew System::EventHandler(this, &Form1::redoToolStripMenuItem_Click);
 			// 
 			// label1
 			// 
 			this->label1->AutoSize = true;
 			this->label1->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 14, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(204)));
-			this->label1->Location = System::Drawing::Point(155, 88);
+			this->label1->Location = System::Drawing::Point(227, 88);
 			this->label1->Margin = System::Windows::Forms::Padding(6, 0, 6, 0);
 			this->label1->Name = L"label1";
 			this->label1->Size = System::Drawing::Size(20, 24);
 			this->label1->TabIndex = 1;
 			this->label1->Text = L"0";
 			// 
+			// label2
+			// 
+			this->label2->AutoSize = true;
+			this->label2->Location = System::Drawing::Point(88, 88);
+			this->label2->Name = L"label2";
+			this->label2->Size = System::Drawing::Size(20, 24);
+			this->label2->TabIndex = 3;
+			this->label2->Text = L"0";
+			// 
+			// label3
+			// 
+			this->label3->AutoSize = true;
+			this->label3->Location = System::Drawing::Point(47, 64);
+			this->label3->Name = L"label3";
+			this->label3->Size = System::Drawing::Size(103, 24);
+			this->label3->TabIndex = 4;
+			this->label3->Text = L"Max score:";
+			// 
+			// label4
+			// 
+			this->label4->AutoSize = true;
+			this->label4->Location = System::Drawing::Point(203, 64);
+			this->label4->Name = L"label4";
+			this->label4->Size = System::Drawing::Size(65, 24);
+			this->label4->TabIndex = 5;
+			this->label4->Text = L"Score:";
+			// 
 			// Form1
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(11, 24);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->ClientSize = System::Drawing::Size(345, 488);
+			this->Controls->Add(this->label4);
+			this->Controls->Add(this->label3);
+			this->Controls->Add(this->label2);
 			this->Controls->Add(this->label1);
 			this->Controls->Add(this->pictureBox1);
 			this->Controls->Add(this->menuStrip1);
@@ -178,10 +215,12 @@ namespace CppCLR_WinformsProjekt {
 	public: System::Void Drop();
 	private: System::Void Generate();
 	private: System::Void Save();
+	private: bool isZero();
 	private: SolidBrush^ GenerateColor(int value);
 	private: System::Void Form1_Click(System::Object^  sender, System::EventArgs^  e);
 	private: System::Void Form1_KeyDown(System::Object^  sender, System::Windows::Forms::KeyEventArgs^  e);
 	private: System::Void resetToolStripMenuItem_Click(System::Object^  sender, System::EventArgs^  e);
 	private: System::Void undoToolStripMenuItem_Click(System::Object^  sender, System::EventArgs^  e);
+	private: System::Void redoToolStripMenuItem_Click(System::Object^  sender, System::EventArgs^  e);
 };
 }

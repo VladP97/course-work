@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "Form1.h"
+#include "vector"
 using namespace System::Collections::Generic;
 // #include "Form1.h"
 
@@ -8,12 +9,17 @@ int field[4][4] = { { 2, 0, 0, 0 },
 					{ 0, 0, 0, 0 }, 
 					{ 0, 0, 0, 0 } };
 
-int ***fields = new int**[1];
-int length = 10;
+int length = 0;
+
+std::vector<std::vector<std::vector<int>>> fields(0);
 
 int curTurnNubmer = 0;
 
 int score = 0;
+
+int maxScore = 0;
+
+bool isMove = false;
 
 inline System::Drawing::SolidBrush^ CppCLR_WinformsProjekt::Form1::GenerateColor(int value) {
 	SolidBrush^ solidbrush;
@@ -82,11 +88,7 @@ inline System::Drawing::SolidBrush^ CppCLR_WinformsProjekt::Form1::GenerateColor
 
 System::Void CppCLR_WinformsProjekt::Form1::Form1_Load(System::Object ^ sender, System::EventArgs ^ e)
 {
-	for (int i = 0; i < 10; ++i) {
-		fields[i] = new int*[4];
-		for (int j = 0; j < 4; ++j)
-			fields[i][j] = new int[4];
-	}
+	Save();
 }
 
 inline System::Void CppCLR_WinformsProjekt::Form1::pictureBox1_Paint(System::Object ^ sender, System::Windows::Forms::PaintEventArgs ^ e)
@@ -129,51 +131,86 @@ inline System::Void CppCLR_WinformsProjekt::Form1::pictureBox1_Paint(System::Obj
 inline System::Void CppCLR_WinformsProjekt::Form1::Form1_KeyDown(System::Object^  sender, System::Windows::Forms::KeyEventArgs^  e) {
 	if (e->KeyCode == Keys::Down)
 	{
-		Save();
 		Drop();
+		if (isMove)
+		{
+			curTurnNubmer++;
+			Save();
+		}
+		isMove = false;
 	}
 	if (e->KeyCode == Keys::Left)
 	{
-		Save();
 		CppCLR_WinformsProjekt::Form1::Rotate();
 		CppCLR_WinformsProjekt::Form1::Rotate();
 		CppCLR_WinformsProjekt::Form1::Rotate();
 		Drop();
 		CppCLR_WinformsProjekt::Form1::Rotate();
-
+		if (isMove)
+		{
+			curTurnNubmer++;
+			Save();
+		}
+		isMove = false;
 	}
 	if (e->KeyCode == Keys::Right)
 	{
-		Save();
 		CppCLR_WinformsProjekt::Form1::Rotate();
 		Drop();
 		CppCLR_WinformsProjekt::Form1::Rotate();
 		CppCLR_WinformsProjekt::Form1::Rotate();
 		CppCLR_WinformsProjekt::Form1::Rotate();
+		if (isMove)
+		{
+			curTurnNubmer++;
+			Save();
+		}
+		isMove = false;
 	}
 	if (e->KeyCode == Keys::Up)
 	{
-		Save();
 		CppCLR_WinformsProjekt::Form1::Rotate();
 		CppCLR_WinformsProjekt::Form1::Rotate();
 		Drop();
 		CppCLR_WinformsProjekt::Form1::Rotate();
 		CppCLR_WinformsProjekt::Form1::Rotate();
+		if (isMove)
+		{
+			curTurnNubmer++;
+			Save();
+		}
+		isMove = false;
 	}
 	Control::Refresh();
 }
 
 void CppCLR_WinformsProjekt::Form1::Save() {
-	if (length == curTurnNubmer)
+	if (length != curTurnNubmer)
 	{
-		for (int i = length; i < length * 2; i++) {
-			fields[i] = new int*[4];
-			for (int j = 0; j < 4; ++j)
-				fields[i][j] = new int[4];
+		for (int i = curTurnNubmer; i < length; i++)
+		{
+			for (int j = 0; j < 4; j++)
+			{
+				for (int k = 0; k < 4; k++)
+				{
+					fields[i][j][k] = 0;
+				}
+			}
 		}
-		length *= 2;
 	}
 
+	if (length == curTurnNubmer)
+	{
+		fields.resize(length + 1);
+		length++;
+	}
+
+	fields[curTurnNubmer] = std::vector<std::vector<int>>(4);
+
+	for (int i = 0; i < 4; i++)
+	{
+		fields[curTurnNubmer][i] = std::vector<int>(4);
+	}
 	for (int i = 0; i < 4; i++)
 	{
 		for (int j = 0; j < 4; j++)
@@ -181,12 +218,16 @@ void CppCLR_WinformsProjekt::Form1::Save() {
 			fields[curTurnNubmer][i][j] = field[i][j];
 		}
 	}
-	curTurnNubmer++;
 }
 
 inline System::Void CppCLR_WinformsProjekt::Form1::resetToolStripMenuItem_Click(System::Object^  sender, System::EventArgs^  e) {
+	label2->Text = score.ToString();
 	score = 0;
 	label1->Text = "0";
+	std::vector<std::vector<std::vector<int>>> newFields(0);
+	fields = newFields;
+	curTurnNubmer = 0;
+	length = 0;
 	for (int i = 0; i < 4; i++)
 	{
 		for (int j = 0; j < 4; j++)
@@ -195,6 +236,7 @@ inline System::Void CppCLR_WinformsProjekt::Form1::resetToolStripMenuItem_Click(
 		}
 	}
 	field[0][0] = 2;
+	Save();
 	Control::Refresh();
 }
 
@@ -215,6 +257,7 @@ inline System::Void CppCLR_WinformsProjekt::Form1::Drop() {
 	}
 	if (isCanMove)
 	{
+		isMove = true;
 		for (int i = 0; i < 4; i++)
 		{
 			cur = field[3][i];
@@ -275,19 +318,45 @@ inline System::Void CppCLR_WinformsProjekt::Form1::Drop() {
 }
 
 inline System::Void CppCLR_WinformsProjekt::Form1::undoToolStripMenuItem_Click(System::Object^  sender, System::EventArgs^  e) {
-	label1->Text = "";
-	if (curTurnNubmer != 0)
+	if (curTurnNubmer > 0)
+	{
+		curTurnNubmer--;
+		for (int i = 0; i < 4; i++)
+		{
+			for (int j = 0; j < 4; j++)
+			{
+				field[i][j] = fields[curTurnNubmer][i][j];
+			}
+		}
+		Control::Refresh();
+	}
+}
+
+inline bool CppCLR_WinformsProjekt::Form1::isZero() {
+	for (int i = 0; i < 4; i++)
+	{
+		for (int j = 0; j < 4; j++)
+		{
+			if (fields[curTurnNubmer][i][j] != 0)
+			{
+				return false;
+			}
+		}
+	}
+	return true;
+}
+
+inline System::Void CppCLR_WinformsProjekt::Form1::redoToolStripMenuItem_Click(System::Object^  sender, System::EventArgs^  e) {
+	if (curTurnNubmer + 1 != length && !isZero())
 	{
 		for (int i = 0; i < 4; i++)
 		{
 			for (int j = 0; j < 4; j++)
 			{
-				field[i][j] = fields[curTurnNubmer - 1][i][j];
-				label1->Text += fields[curTurnNubmer - 1][i][j].ToString()+ " ";
+				field[i][j] = fields[curTurnNubmer + 1][i][j];
 			}
-			label1->Text += "\n";
 		}
-		curTurnNubmer--;
+		curTurnNubmer++;
 		Control::Refresh();
 	}
 }

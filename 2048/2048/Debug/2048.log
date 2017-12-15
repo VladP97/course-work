@@ -1,10 +1,10 @@
 ﻿  CppCLR_WinformsProjekt.cpp
   Form1.cpp
-Form1.cpp(100): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
-Form1.cpp(108): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
-Form1.cpp(116): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
-Form1.cpp(124): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
+Form1.cpp(102): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
+Form1.cpp(110): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
+Form1.cpp(118): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
+Form1.cpp(126): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
   Создание кода...
-d:\ерат\course-work\2048\2048\form1.h(184): warning C4715: CppCLR_WinformsProjekt::Form1::IsInputKey: значение возвращается не при всех путях выполнения
-d:\ерат\course-work\2048\2048\form1.h(184): warning C4715: CppCLR_WinformsProjekt::Form1::IsInputKey: значение возвращается не при всех путях выполнения
+d:\ерат\course-work\2048\2048\form1.h(187): warning C4715: CppCLR_WinformsProjekt::Form1::IsInputKey: значение возвращается не при всех путях выполнения
+d:\ерат\course-work\2048\2048\form1.h(187): warning C4715: CppCLR_WinformsProjekt::Form1::IsInputKey: значение возвращается не при всех путях выполнения
   2048.vcxproj -> D:\ЕРАТ\course-work\2048\Debug\2048.exe
